@@ -4,7 +4,7 @@
   <div class="chat-window" ref="chat">
     <template v-if="allMsgs.length">
       <div v-for="msg in allMsgs" :key="msg.id">
-        <small class="small">{{ formatTime(msg.created_at) }}</small>
+        <small class="small">{{ formatTime(msg.created_at) }}</small>&nbsp;
         <b class="name" :style="{ color: msg.color }">{{ msg.name }} : </b
         ><span>{{ msg.msg }}</span>
       </div>
@@ -63,7 +63,6 @@ export default {
       msg: "",
       color: "",
       names: [],
-      // selfName: null,
       lastId: 0,
       soundCheck: true,
       fullDate: false,
@@ -74,7 +73,6 @@ export default {
       disabled: false,
       nameStatus: "Введите имя и нажмите установить",
       nameChecked: false,
-      // statusText: "",
       success: true,
     };
   },
@@ -119,19 +117,19 @@ export default {
       this.allMsgs = [];
     },
     scrollToBottom() {
-      this.$refs.chat.scrollTop = this.$refs.chat.clientHeight;
+      // console.log(this.$refs.chat.clientHeight);
+      this.$refs.chat.scrollTop = 10000000000;
     },
     async all() {
       let url = "/vchat/all";
       await fetch(url)
         .then((response) => response.json())
         .then((result) => {
-          // console.log(result);
           if (result.success && result.msgs.length) {
             this.lastId = result.lastId;
             this.allMsgs.push(...result.msgs);
             this.allMsgs.reverse();
-            this.scrollToBottom();
+            setTimeout(this.scrollToBottom, 300);
             let thisName = this.name.toLowerCase();
             this.allMsgs.map((item) => {
               // создаем массив с уже используемыми именами в нижнем регистре
@@ -140,7 +138,6 @@ export default {
                 this.names.push(itemName);
               }
             });
-            // console.log(this.names)
           }
         })
         .catch((error) => console.log("error", error));
@@ -164,10 +161,8 @@ export default {
       })
         .then((response) => response.json())
         .then((result) => {
-          // console.log(result);
           if (result.success && result.id) {
             this.update();
-            // this.submited = this.msg;
             this.msg = "";
           }
         })
@@ -254,6 +249,7 @@ button {
 .msg-block {
   position: relative;
 }
+
 
 .msg-send {
   position: absolute;
