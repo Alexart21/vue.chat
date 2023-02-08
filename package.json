@@ -1,0 +1,26 @@
+{
+  "name": "spa.vue",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build"
+  },
+  "dependencies": {
+    "core-js": "^3.21.1",
+    "find-cache-dir": "^3.3.2",
+    "vue": "^3.2.31",
+    "vuex": "^4.0.2",
+    "@mdi/js": "^7.0.96",
+    "@vue/cli": "^5.0.3",
+    "mdi-vue": "^3.0.13"
+    
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "*",
+    "@vue/cli-service": "*",
+    "@vue/compiler-sfc": "*",
+    "node-sass": "*",
+    "sass-loader": "*"
+  }
+}
