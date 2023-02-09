@@ -37,11 +37,12 @@
             <div v-for="msg in allMsgs" :key="msg.id">
               <small class="small">{{ formatTime(msg.created_at) }}</small
               >&nbsp;
-              <b class="name" :style="{ color: msg.color }">{{ msg.name }} : </b
-              ><span>{{ msg.msg }}</span>
+              <b class="name" :style="{ color: msg.color }">{{ msg.name }}</b
+              > : <span>{{ msg.msg }}</span>
             </div>
           </template>
-          <form action="" @submit.prevent="formSend" id="chatForm">
+        </div>
+        <form action="" @submit.prevent="formSend" id="chatForm">
             <div class="msg-block">
               <textarea
                 @keydown.enter.ctrl="formSend"
@@ -58,7 +59,6 @@
               </button>
             </div>
           </form>
-        </div>
       </div>
       <!-- end smartphone -->
     </div>
@@ -195,7 +195,7 @@ export default {
                 this.names.push(itemName);
               }
             });
-            this.scrollToBottom();
+            setTimeout(this.scrollToBottom, 300);
             if (this.soundCheck) {
               this.snd.play();
             }
@@ -238,6 +238,10 @@ export default {
 
 .name-inp {
   width: 300px;
+}
+
+.name{
+  text-decoration: underline;
 }
 
 .msg-inp {
@@ -312,9 +316,12 @@ export default {
 .content {
   position: relative;
   width: 340px;
-  height: 580px;
-  padding: 0.5em 0.5em 3em 0.5em;
+  height: 550px;
+  padding: 0.5em;
   overflow-y: scroll;
+  overflow-x: hidden;
+  scrollbar-width: 0 !important;
+  background: #fff;
 }
 .mob-text {
   width: 340px;
