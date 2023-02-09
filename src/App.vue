@@ -1,57 +1,67 @@
 <template>
-<div class="container">
-  <h1>Vue 3 && Mysql chat used setInterval</h1>
-  <div class="chat-window" ref="chat">
-    <template v-if="allMsgs.length">
-      <div v-for="msg in allMsgs" :key="msg.id">
-        <small class="small">{{ formatTime(msg.created_at) }}</small>&nbsp;
-        <b class="name" :style="{ color: msg.color }">{{ msg.name }} : </b
-        ><span>{{ msg.msg }}</span>
+  <h1 style="text-align: center">Vue 3 && Mysql chat used setInterval</h1>
+  <div class="chat-block">
+    <div>
+      <div v-if="nameStatus" :style="{ color: nameChecked ? '#222' : 'red' }">
+        {{ nameStatus }}
       </div>
-    </template>
-  </div>
-  <form ref="chatForm" action="" @submit.prevent="formSend">
-    <div v-if="nameStatus" :style="{ color: nameChecked ? '#222' : 'red' }">
-      {{ nameStatus }}
-    </div>
-    <input
-      class="name-inp"
-      :style="{ color: color }"
-      type="text"
-      name="name"
-      v-model="name"
-      placeholder="имя"
-      @input="checkName"
-    />
-    &nbsp;
-    <input type="color" v-model="color" @input="setColor" />
-    <button @click="sendName" class="btn btn-primary">Установить</button>
-    <br />
-    <small>отправка кнопкой или Ctrl + Enter</small>
-    <div class="msg-block">
-      <textarea
-        @keydown.enter.ctrl="formSend"
-        class="msg-inp"
+      <input
+        class="name-inp"
+        :style="{ color: color }"
         type="text"
-        name="msg"
-        v-model="msg"
-        placeholder="текст"
-        rows="2"
-      >
-      </textarea>
-      <button type="submit" :disabled="disabled" class="msg-send">
-        <mdicon name="send" width="40" height="40" class="send-icon" />
+        name="name"
+        v-model="name"
+        placeholder="имя"
+        @input="checkName"
+        form="chatForm"
+      />
+      &nbsp;
+      <input
+        type="color"
+        v-model="color"
+        @input="setColor"
+        form="chatForm"
+      />&nbsp;
+      <button @click="sendName">Установить</button>
+      <br />
+      <button @click="clear" type="button" class="btn btn-warning">
+        Очистить чат
       </button>
+      <input type="checkbox" v-model="soundCheck" />Звук
+      <input type="checkbox" v-model="fullDate" />Показывать дату
+      <br />
+      <!-- smartphone -->
+      <div class="smartphone">
+        <div class="content" ref="chat">
+          <template v-if="allMsgs.length">
+            <div v-for="msg in allMsgs" :key="msg.id">
+              <small class="small">{{ formatTime(msg.created_at) }}</small
+              >&nbsp;
+              <b class="name" :style="{ color: msg.color }">{{ msg.name }} : </b
+              ><span>{{ msg.msg }}</span>
+            </div>
+          </template>
+          <form action="" @submit.prevent="formSend" id="chatForm">
+            <div class="msg-block">
+              <textarea
+                @keydown.enter.ctrl="formSend"
+                class="msg-inp"
+                type="text"
+                name="msg"
+                v-model="msg"
+                placeholder="текст"
+                rows="2"
+              >
+              </textarea>
+              <button type="submit" :disabled="disabled" class="msg-send">
+                <mdicon name="send" width="40" height="40" class="send-icon" />
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <!-- end smartphone -->
     </div>
-    <!-- <button @click="update()" type="button" class="btn btn-success">
-      update
-    </button> -->
-    <button @click="clear" type="button" class="btn btn-warning">
-      Очистить чат
-    </button>
-    <input type="checkbox" v-model="soundCheck" />Звук
-    <input type="checkbox" v-model="fullDate" />Показывать дату
-  </form>
   </div>
 </template>
 <script>
@@ -215,13 +225,10 @@ export default {
   },
 };
 </script>
-<style scoped>
-.chat-window {
-  width: 600px;
-  height: 400px;
-  padding: 1em 1em 3em 1em;
-  border: 1px solid #222;
-  overflow-y: scroll;
+<style>
+.chat-block {
+  display: flex;
+  justify-content: center;
 }
 .name-inp,
 .msg-inp {
@@ -230,11 +237,11 @@ export default {
 }
 
 .name-inp {
-  width: 12em;
+  width: 300px;
 }
 
 .msg-inp {
-  width: 600px;
+  width: 270px;
   padding: 0 3em 0 0.5em;
 }
 
@@ -242,24 +249,76 @@ export default {
   color: rgba(0, 0, 0, 0.3);
 }
 
-button {
-  margin: 0.5em;
-}
-
 .msg-block {
-  position: relative;
+  position: absolute;
+  left: 10px;
+  top: 600px;
 }
-
 
 .msg-send {
   position: absolute;
-  left: 540px;
-  top: 0;
+  left: 270px;
+  top: -5px;
   background-color: transparent !important;
   border: none !important;
+  cursor: pointer;
 }
 
 .send-icon {
   color: blueviolet;
 }
+/* smartphone */
+.smartphone {
+  margin-top: 1em;
+  position: relative;
+  width: 360px;
+  height: 640px;
+  /* margin: auto; */
+  border: 16px black solid;
+  border-top-width: 60px;
+  border-bottom-width: 60px;
+  border-radius: 36px;
+}
+
+/* The horizontal line on the top of the device */
+.smartphone:before {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 5px;
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #333;
+  border-radius: 10px;
+}
+
+/* The circle on the bottom of the device */
+.smartphone:after {
+  content: "";
+  display: block;
+  width: 35px;
+  height: 35px;
+  position: absolute;
+  left: 50%;
+  bottom: -65px;
+  transform: translate(-50%, -50%);
+  background: #333;
+  border-radius: 50%;
+}
+
+/* The screen (or content) of the device */
+.content {
+  position: relative;
+  width: 340px;
+  height: 580px;
+  padding: 0.5em 0.5em 3em 0.5em;
+  overflow-y: scroll;
+}
+.mob-text {
+  width: 340px;
+  margin: 0 auto;
+}
+/* end smartphone */
 </style>

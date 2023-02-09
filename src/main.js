@@ -15,4 +15,4 @@ createApp(App)
 
 store.dispatch('loadCsrf');
 
-import './assets/css/bootstrap.min.css';
+// import './assets/css/bootstrap.min.css';
